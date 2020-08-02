@@ -10,3 +10,32 @@ const { API_KEY } = require('../../config.js');
 // Get your API Key and save it in your config file
 
 // Don't forget to export your functions and require them within your server file
+
+const getGenres = () => {
+  return axios({
+    method: 'get',
+    url: 'https://api.themoviedb.org/3/genre/movie/list',
+    params: {
+      api_key: API_KEY
+    }
+  });
+}
+
+const getMoviesAPI = (genreID) => {
+  return axios({
+    method: 'get',
+    url: 'https://api.themoviedb.org/3/discover/movie',
+    params: {
+      api_key: API_KEY,
+      with_genres: genreID,
+      sort_by: 'popularity.asc'
+    }
+  });
+}
+
+
+
+module.exports = {
+  getGenres,
+  getMoviesAPI,
+}

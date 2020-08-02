@@ -13,12 +13,19 @@ class App extends React.Component {
       favorites: [{deway: "favorites"}],
       showFaves: false,
     };
-    
+
     // you might have to do something important here!
+    this.swapFavorites = this.swapFavorites.bind(this);
+    this.getMovies = this.getMovies.bind(this);
+    this.saveMovie = this.saveMovie.bind(this);
+    this.deleteMovie = this.deleteMovie.bind(this);
   }
 
-  getMovies() {
+  getMovies(moviesFromAPI) {
     // make an axios request to your server on the GET SEARCH endpoint
+    this.setState({
+      movies: moviesFromAPI
+    })
   }
 
   saveMovie() {
@@ -39,11 +46,19 @@ class App extends React.Component {
   render () {
   	return (
       <div className="app">
-        <header className="navbar"><h1>Bad Movies</h1></header> 
-        
+        <header className="navbar"><h1>Bad Movies</h1></header>
+
         <div className="main">
-          <Search swapFavorites={this.swapFavorites} showFaves={this.state.showFaves}/>
-          <Movies movies={this.state.showFaves ? this.state.favorites : this.state.movies} showFaves={this.state.showFaves}/>
+          <Search
+            swapFavorites={this.swapFavorites}
+            showFaves={this.state.showFaves}
+            getMovies={this.getMovies}
+          />
+          <Movies
+            movies={this.state.showFaves ? this.state.favorites : this.state.movies}
+            showFaves={this.state.showFaves}
+            updateMovie={this.state.showFaves ? this.deleteMovie : this.saveMovie }
+          />
         </div>
       </div>
     );
