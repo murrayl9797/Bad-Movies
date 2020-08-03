@@ -12,11 +12,11 @@ Learn the fundamentals of application structure and database integration by maki
 
 [Complete] A search should find and display a limited list of movies sorted by rating in ascending order, showing the movies with the worst ratings first (figure out how to modify the API endpoint to do so)
 
-[ ] User should be able to click on any movie in order to save it to their favorites list (mySQL database, you must make your own Schema)
+[Complete] User should be able to click on any movie in order to save it to their favorites list (mySQL database, you must make your own Schema)
 
-[ ] If a user has navigated to their favorites page, clicking on a movie should delete it from their favorites (unlike on the main page, where clicking on a movie adds it to their favorites list)
+[Complete] If a user has navigated to their favorites page, clicking on a movie should delete it from their favorites (unlike on the main page, where clicking on a movie adds it to their favorites list)
 
-[ ] Store your data in MySQL db (or MongoDB if/when you feel comfortable)
+[Complete] Store your data in MySQL db (or MongoDB if/when you feel comfortable)
 
 ### The API for the application, where you will query for worst movies and all official genres:
 

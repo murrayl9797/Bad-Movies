@@ -27,11 +27,16 @@ class Movies extends React.Component {
           return (
             <li
               className="movie_item"
-              onClick={() => this.props.updateMovie(movie)}
             >
               <img src={`http://image.tmdb.org/t/p/w185/${movie.poster_path}`} />
               <div className="movie_description">
-                <h2>{movie.original_title}</h2>
+                <h2
+                  onClick={() => {
+                    console.log(movie)
+                    this.props.updateMovie(movie)
+                  }
+                  }
+                >{movie.original_title}</h2>
                 <section className="movie_details">
                   <div className="movie_year">
                     <span className="title">Year</span>

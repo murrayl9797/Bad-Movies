@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import $ from 'jquery';
 // import AnyComponent from './components/filename.jsx'
+import axios from 'axios';
 import Search from './components/Search.jsx'
 import Movies from './components/Movies.jsx'
 
@@ -9,8 +10,8 @@ class App extends React.Component {
   constructor(props) {
   	super(props)
   	this.state = {
-      movies: [{deway: "movies"}],
-      favorites: [{deway: "favorites"}],
+      movies: [],
+      favorites: [],
       showFaves: false,
     };
 
@@ -19,6 +20,29 @@ class App extends React.Component {
     this.getMovies = this.getMovies.bind(this);
     this.saveMovie = this.saveMovie.bind(this);
     this.deleteMovie = this.deleteMovie.bind(this);
+    this.updateFavorites = this.updateFavorites.bind(this);
+  }
+
+  componentDidMount() {
+    //Get favorites from database
+    this.updateFavorites();
+  }
+
+  updateFavorites() {
+    axios({
+      method: 'get',
+      url: '/getfavs'
+    })
+      .then((favorites) => {
+        console.log("Retrieved favorites: ", favorites.data)
+        // Then set this.state.favorites
+        this.setState({
+          favorites: favorites.data
+        })
+      })
+      .catch((err) => {
+        console.log("Did not get favorites: ", err)
+      })
   }
 
   getMovies(moviesFromAPI) {
@@ -28,12 +52,41 @@ class App extends React.Component {
     })
   }
 
-  saveMovie() {
+  saveMovie(movie) {
     // same as above but do something diff
+    // send to server
+    axios({
+      method: 'post',
+      url: '/save',
+      data: {
+        movie: movie
+      }
+    })
+      .then((respData) => {
+        console.log('Saved movie successfully :', respData)
+        this.updateFavorites()
+      })
+      .catch((err) => {
+        console.log('Did not correctly save movie: ', err)
+      })
   }
 
-  deleteMovie() {
+  deleteMovie(movie) {
     // same as above but do something diff
+    axios({
+      method: 'post',
+      url: '/delete',
+      data: {
+        movie: movie
+      }
+    })
+      .then((resp) => {
+        console.log('Successfully removed movie: ', resp)
+        this.updateFavorites()
+      })
+      .catch((err) => {
+        console.log('Could not delete successfully')
+      })
   }
 
   swapFavorites() {

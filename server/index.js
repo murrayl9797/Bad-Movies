@@ -9,6 +9,7 @@ var app = express();
 
 //Helpers
 var { getGenres, getMoviesAPI } = require("./helpers/apiHelpers.js");
+var { getFavorites, saveFavorite, deleteMovie } = require("../db/mongodb");
 
 //Middleware
 app.use(bodyParser.json());
@@ -70,11 +71,47 @@ app.get("/search", function(req, res) {
 
 app.post("/save", function(req, res) {
   //save movie as favorite into the database
+  console.log('Receieved save request :', req.body)
+  saveFavorite(req.body.movie)
+    .then((insertInfo) => {
+      console.log('Inserted fav movie correctly :', insertInfo)
+      res.sendStatus(201)
+    })
+    .catch((err) => {
+      console.log('Could not insert favorite correctly: ', err)
+      res.sendStatus(404)
+    })
 });
 
 app.post("/delete", function(req, res) {
   //remove movie from favorites into the database
+  console.log('Trying to delete movie')
+  deleteMovie(req.body.movie)
+    .then((deleteInfo) => {
+      console.log('Successfully deleted :', deleteInfo)
+      res.sendStatus(201);
+    })
+    .catch((err) => {
+      console.log('Could not delete movie: ', err)
+      res.sendStatus(404)
+    })
 });
+
+app.get("/getfavs", function(req, res) {
+  //retrieve movies from favorites in the database
+  console.log('Recieved get request for favorites')
+  getFavorites()
+    .then((results) => {
+      console.log('Retrieved favorites :', results)
+      // Send them back
+      res.status(200).send(results)
+    })
+    .catch((err) => {
+      console.log('Could not retrieve favorites :', err)
+      res.sendStatus(404)
+    })
+});
+
 
 //***********************************************************************************************************************
 //OPTION 2: Use Express Router
